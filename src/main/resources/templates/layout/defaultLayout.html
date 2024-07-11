@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html 
+	lang="ko"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+	<!-- layout 라이브러리 --> 
+	
+	<!-- head config 태그  -->
+	<!--  :: config.html 의 th:fragment="configFragment"  -->
+	<th:block th:replace="fragments/config :: configFragment"></th:block>
+<body>
+<!-- 재활용 된다  -->
+	<div id="wrap">
+		<!-- header -->
+		<header th:replace="fragments/header :: headerFragment"></header>
+		
+		<!-- content -->
+		<section layout:fragment="content" class="contents"></section>
+		
+		<!-- script : content 조각 안에 있음 -->
+		<th:block layout:fragment="script"></th:block>
+		
+		<!-- footer -->
+		<footer th:replace="fragments/footer :: footerFragment"></footer>
+	</div>
+</body>
+</html>
