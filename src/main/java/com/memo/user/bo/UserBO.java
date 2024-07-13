@@ -28,4 +28,11 @@ public class UserBO {
 				.email(email)
 				.build());
 	}
+	
+	// 로그인
+	// input : loginId, password
+	// output : UserEntity or null
+	public UserEntity getUserEntityByLoginIdPassword(String loginId, String password) {
+		return userRepository.findByLoginIdAndPassword(loginId, password);
+	}
 }

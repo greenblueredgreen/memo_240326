@@ -61,7 +61,7 @@ public class UserRestController {
 			// db insert
 			// password 말고 hashedPassword 보내야한다!
 			UserEntity user = userBO.addUser(loginId, hashedPassword, name, email);
-			
+		
 			// 응답값
 			Map<String, Object> result = new HashMap<>();
 			if(user != null) {
@@ -70,6 +70,28 @@ public class UserRestController {
 			} else {
 				result.put("code", 500);
 				result.put("error_message", "회원가입 실패했습니다");
+			}
+			return result;
+		}
+		
+		@PostMapping("sign-in")
+		public Map<String, Object> signIn(
+				@RequestParam("loginId") String loginId,
+				@RequestParam("password") String password
+				){
+			String hashedPassword  = EncryptUtils.md5(password);   
+			
+			//db조회(loginId, hashing 비번)
+			//hashedPassword로 보내기
+			UserEntity userIdPassword = userBO.getUserEntityByLoginIdPassword(loginId, hashedPassword);
+			
+			Map<String, Object> result = new HashMap<>();
+			if(userIdPassword != null) {
+				result.put("code", 200);
+				result.put("result", "성공");
+			} else {
+				result.put("code", 300);
+				result.put("error_message", "로그인 실패했습니다");
 			}
 			return result;
 		}
