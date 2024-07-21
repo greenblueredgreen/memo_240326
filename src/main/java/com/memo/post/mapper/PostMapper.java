@@ -21,11 +21,11 @@ public interface PostMapper {
 			@Param("subject") String subject, 
 			@Param("content") String content, 
 			@Param("imagePath") String imagePath);
+			//multipart는 DB에 못들어간다
+			//String 으로 바꿔줘야한다. 
 	
 	public Post selectPostByPostIdUserId(
 			@Param("userId") int userId, 
 			@Param("postId") int postId);
-			//multipart는 DB에 못들어간다
-			//String 으로 바꿔줘야한다. 
 	
 }
