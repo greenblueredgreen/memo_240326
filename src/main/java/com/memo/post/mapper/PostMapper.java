@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.memo.post.domain.Post;
 
@@ -13,4 +15,17 @@ public interface PostMapper {
 	public List<Map<String, Object>> selectPostListTest();
 	
 	public List<Post> selectPostListByUserId(int userId);
+	
+	public void insertPost(
+			@Param("userId") int userId, 
+			@Param("subject") String subject, 
+			@Param("content") String content, 
+			@Param("imagePath") String imagePath);
+	
+	public Post selectPostByPostIdUserId(
+			@Param("userId") int userId, 
+			@Param("postId") int postId);
+			//multipart는 DB에 못들어간다
+			//String 으로 바꿔줘야한다. 
+	
 }

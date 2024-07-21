@@ -1,9 +1,8 @@
-<!DOCTYPE html>
 <html 
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/defaultLayout}">
-<section layout:fragment="content" class="d-flex justify-content-center">
+<section layout:fragment="content" class="contents d-flex justify-content-center">
 	<div class="w-50">
 		<h1>글쓰기</h1>
 		
@@ -27,21 +26,88 @@
 
 <th:block layout:fragment="script">
     <script>
-		$(document).ready(function(){
-			$("#postListBtn").on('click', function(){
-				location.href="/post/post-list-view";
+		$(document).ready(function() {
+			// 목록 버튼 클릭 -> 화면 이동
+			$("#postListBtn").on('click', function() {
+				location.href = "/post/post-list-view";
 			});
 			
-			//모두 지우기
-			$("#clearBtn").on('click', function(){
+			// 모두 지우기
+			$("#clearBtn").on('click', function() {
 				//alert("모두 지우기");
-				$("#subject").val("");  // 내용 초기화
-				$("#content").val("");  // 내용 초기화
+				$("#subject").val(""); // 내용 초기화
+				$("#content").val(""); // 내용 초기화
 			});
 			
 			// 글쓰기
-			$("#saveBtn").on('click', function(){
+			$("#saveBtn").on('click', function() {
 				//alert("글쓰기");
+				//trim()에 파라미터로 값을 넣으면 그 값으로 셋팅됨
+				let subject = $("#subject").val().trim();  // 내용 초기화
+				let content = $("#content").val();  //내용 초기화
+				let fileName = $("#file").val(); // C:\fakepath\flower-8557060_640.jpg
+				
+				if (!subject) {
+					alert("제목을 입력하세요");
+					return;
+				}
+				
+				if (!content) {
+					alert("내용을 입력하세요");
+					return;
+				}
+				
+				// 파일명이 비워져 있지 않으면 => 확장자 체크
+				if (fileName) {
+					//alert("파일이 있다.");
+					// C:\fakepath\flower-8557060_640.jpg
+					let extension = fileName.split(".").pop().toLowerCase();
+					console.log(extension);
+					
+					if ($.inArray(extension, ["jpg", "gif", "png"]) == -1) {
+						alert("이미지 파일만 업로드 할 수 있습니다.");
+						$("#file").val(""); // 파일을 비운다.
+						return;
+					}
+				}
+				
+				console.log(subject);
+				console.log(content);
+				
+				// form태그를 js에서 만든다.
+				// 이미지 업로드 시 반드시 필요
+				let formData = new FormData();
+				formData.append("subject", subject); // key는 name과 같고 리퀘스트 파라미터명
+				formData.append("content", content);
+				formData.append("file", $("#file")[0].files[0]);
+				
+				// AJAX
+				$.ajax({
+					// request
+					type:"post"
+					, url:"/post/create"
+					, data:formData //이게 통으로 넘어간다
+					, enctype:"multipart/form-data" // 파일업로드 필수 설정
+					, processData:false // 파일업로드 필수 설정
+					, contentType:false // 파일업로드 필수 설정
+					
+					//파일 업로드 필수 설정 : enctype, processData, contentType
+
+					
+					// response
+					, success:function(data) {
+						if (data.code == 200) {
+							alert("메모가 저장되었습니다.");
+							// 글목록 화면 이동
+							location.href = "/post/post-list-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("글을 저장하는데 실패했습니다.");
+					}
+				});
 			});
 		});
     </script>
