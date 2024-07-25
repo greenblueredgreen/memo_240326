@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class PostRestController {
 	private PostBO postBO;
 	
 	/**
-	 * 메모 생성
+	 * 메모 생성 API
 	 * @param subject
 	 * @param content
 	 * @param file
@@ -53,7 +54,7 @@ public class PostRestController {
 	}
 	
 	/**
-	 * 메모 수정
+	 * 글 수정 API
 	 * @param postId
 	 * @param subject
 	 * @param content
@@ -77,6 +78,23 @@ public class PostRestController {
 		postBO.updatePostByPostId(userId, userLoginId, postId, subject, content, file);
 
 		//응답값
+		Map<String, Object> result = new HashMap<>();
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result;
+	}
+	
+	//글 삭제
+	@DeleteMapping("/delete")
+	public Map<String, Object> delete(
+			@RequestParam("postId") int postId,
+			HttpSession session){
+		
+		int userId = (int)session.getAttribute("userId");
+		
+		//DB delete
+		postBO.deletePostByPostIdUserId(postId, userId);
+		
 		Map<String, Object> result = new HashMap<>();
 		result.put("code", 200);
 		result.put("result", "성공");

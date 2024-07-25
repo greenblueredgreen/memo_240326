@@ -89,4 +89,25 @@ public class PostBO {
 		postMapper.updatePostByPostId(postId, subject, content, imagePath);
 		
 	}
+	
+	//input : postId, userId
+	//output : x
+	public void deletePostByPostIdUserId(int postId, int userId) {
+		// 기존 글 가져오기 (이미지 존재시 이미지를 삭제하기 위해 기존 글 가져와야만 한다)
+		Post post = postMapper.selectPostByPostIdUserId(userId, postId);  //이미 기존에 있다
+		// 이미 있는 글을 가져오기 때문에 무조건 존재한다
+		if(post == null) { //삭제할 대상(글)이 없을 때
+			log.info("[글 삭제] post is null. postId : {}, userId : {}", postId, userId);
+			return;
+		}
+		
+		// post db delete
+		// 삭제한 행 개수 리턴(성공한 행 개수) -> 그 후 이미지 삭제
+		int rowCount = postMapper.deletePostByPostId(postId);
+		
+		// TODO 이미지가 존재하면 삭제 and 삭제된 행도 1일 때
+		if(rowCount > 0 && post.getImagePath() != null) { 
+			fileManagerService.deleteFile(post.getImagePath());
+		}
+	}
 }

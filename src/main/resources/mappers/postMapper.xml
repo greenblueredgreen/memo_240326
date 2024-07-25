@@ -75,4 +75,13 @@
 		WHERE
 			`id` = #{postId}
 	</update>
+	
+	<!-- DELETE는 RETURN TYPE 안적음 -->
+	<delete id="deletePostByPostId" parameterType = "int">
+		DELETE
+		FROM
+			`post`
+		WHERE
+			`id` = #{postId}
+	</delete>
  </mapper>
