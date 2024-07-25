@@ -1,7 +1,5 @@
 package com.memo.post.bo;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,9 +80,13 @@ public class PostBO {
 			//업로드 성공 시(imagePath != null) 기존 이미지가 있으면 제거
 			if(imagePath != null && post.getImagePath() != null) {
 				//폴더와 이미지 제거(서버에서)
+				fileManagerService.deleteFile(post.getImagePath());
 				
 			}
 		}
+		
+		// db update
+		postMapper.updatePostByPostId(postId, subject, content, imagePath);
 		
 	}
 }

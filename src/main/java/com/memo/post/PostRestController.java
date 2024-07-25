@@ -22,7 +22,15 @@ public class PostRestController {
 	
 	@Autowired
 	private PostBO postBO;
-
+	
+	/**
+	 * 메모 생성
+	 * @param subject
+	 * @param content
+	 * @param file
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("/create")
 	public Map<String, Object> create(
 			@RequestParam("subject") String subject,
@@ -44,6 +52,15 @@ public class PostRestController {
 		return result;
 	}
 	
+	/**
+	 * 메모 수정
+	 * @param postId
+	 * @param subject
+	 * @param content
+	 * @param file
+	 * @param session
+	 * @return
+	 */
 	@PutMapping("/update")
 	public Map<String, Object> update(
 			@RequestParam("postId") int postId,
@@ -57,6 +74,7 @@ public class PostRestController {
 		String userLoginId = (String) session.getAttribute("userLoginId");
 		
 		//db update
+		postBO.updatePostByPostId(userId, userLoginId, postId, subject, content, file);
 
 		//응답값
 		Map<String, Object> result = new HashMap<>();

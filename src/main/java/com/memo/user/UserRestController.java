@@ -111,7 +111,7 @@ public class UserRestController {
 				// session에 사용자 정보를 담는다(사용가 각각마다)
 				HttpSession session = request.getSession();
 				session.setAttribute("userId", user.getId());
-				session.setAttribute("userloginId", user.getLoginId());
+				session.setAttribute("userLoginId", user.getLoginId());
 				session.setAttribute("userName", user.getName());
 				
 				result.put("code", 200);

@@ -28,4 +28,9 @@ public interface PostMapper {
 			@Param("userId") int userId, 
 			@Param("postId") int postId);
 	
+	public void updatePostByPostId(
+			@Param("postId") int postId, 
+			@Param("subject") String subject, 
+			@Param("content") String content, 
+			@Param("imagePath") String imagePath);
 }
