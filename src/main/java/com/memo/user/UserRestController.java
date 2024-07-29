@@ -35,6 +35,7 @@ public class UserRestController {
 				@RequestParam("loginId") String loginId){
 			
 			//db조회
+			//객체로 받음
 			UserEntity user = userBO.getUserEntityByLoginId(loginId); 
 			
 			//응답값
@@ -43,6 +44,7 @@ public class UserRestController {
 			if(user != null) { //이미 존재한다면 (중복이라면)
 				result.put("is_duplicated_id", true);
 			} else {
+				// 중복아님
 				result.put("is_duplicated_id", false);
 			}
 			return result;

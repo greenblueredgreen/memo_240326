@@ -52,6 +52,7 @@
 		LIMIT 1
 	</select>
 	
+	<!-- 글 생성 메소드  -->
 	<insert id="insertPost" parameterType="map">
 		INSERT INTO `post`
 		(
@@ -73,6 +74,7 @@
 		)
 	</insert>
 	
+	<!-- 삭제, 수정할 글 찾아와 가져오는 쿼리문 -->
 	<select id="selectPostByPostIdUserId" parameterType="map" resultType="com.memo.post.domain.Post">
 		SELECT
 			`id`
@@ -89,6 +91,7 @@
 			AND `id` = #{postId}
 	</select>
 	
+	<!-- 글 수정 -->
 	<update id="updatePostByPostId" parameterType="map">
 		UPDATE `post`
 		SET
@@ -102,6 +105,7 @@
 			`id` = #{postId}
 	</update>
 	
+	<!-- 글번호로 글 삭제  -->
 	<delete id="deletePostByPostId" parameterType="int">
 		DELETE
 		FROM

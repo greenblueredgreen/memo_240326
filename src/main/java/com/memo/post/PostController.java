@@ -21,12 +21,20 @@ public class PostController {
 	@Autowired
 	private PostBO postBO;
 
-	
+	/**
+	 * 글 목록 화면 (이전, 다음)
+	 * @param prevIdParam
+	 * @param nextIdParam
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/post-list-view")
 	public String postListView(
 			@RequestParam(value="prevId", required = false) Integer prevIdParam, //이전
 			@RequestParam(value="nextId", required = false) Integer nextIdParam, //다음
 			HttpSession session, Model model) {
+		
 		//로그인 여부 확인
 		Integer userId = (Integer)session.getAttribute("userId");  //int는 null 저장 불가, Integer은 null 가능
 		if(userId == null) {

@@ -42,7 +42,7 @@ public class UserController {
 		session.removeAttribute("userloginId");
 		session.removeAttribute("userName");
 		
-		//로그인 페이지로 이동
+		// 로그인 페이지로 이동
 		// 위 화면들은 여기서 요청못함. 밖에서 다시 요청해서 들어와야함
 		// 그래서 redirect : 이미 있는 페이지로 이동시키는 것
 		return "redirect:/user/sign-in-view";

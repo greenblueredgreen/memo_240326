@@ -82,21 +82,36 @@ public class PostBO {
 		return postMapper.selectPostByPostIdUserId(userId, postId);
 	}
 	
+	/**
+	 * 글생성 메소드
+	 * @param userId
+	 * @param userLoginId
+	 * @param subject
+	 * @param content
+	 * @param file
+	 */
 	// input: 파라미터들
 	// output: X
 	public void addPost(int userId, String userLoginId, 
 			String subject, String content, MultipartFile file) {
 		
 		String imagePath = null;
-		
 		if (file != null) {
 			// 업로드 할 이미지가 있을 때에만 업로드
 			imagePath = fileManagerService.uploadFile(file, userLoginId);
 		}
-		
 		postMapper.insertPost(userId, subject, content, imagePath);
 	}
 	
+	/**
+	 * 글 수정 메소드 
+	 * @param userId
+	 * @param loginId
+	 * @param postId
+	 * @param subject
+	 * @param content
+	 * @param file
+	 */
 	//input : 파라미터들
 	//output : x
 	public void updatePostByPostId(
@@ -115,7 +130,6 @@ public class PostBO {
 		// 1) 새 이미지를 업로드
 		// 2) 1번 단계가 성공하면 기존 이미지가 있을 때 삭제
 		String imagePath = null;
-		
 		if(file != null) {
 			// 새 이미지 업로드
 			imagePath = fileManagerService.uploadFile(file,loginId);
@@ -123,21 +137,24 @@ public class PostBO {
 			//업로드 성공 시(imagePath != null) 기존 이미지가 있으면 제거
 			if(imagePath != null && post.getImagePath() != null) {
 				//폴더와 이미지 제거(서버에서)
-				fileManagerService.deleteFile(post.getImagePath());
-				
+				fileManagerService.deleteFile(post.getImagePath());	
 			}
 		}
 		
 		// db update
 		postMapper.updatePostByPostId(postId, subject, content, imagePath);
-		
 	}
 	
+	/**
+	 * 글 삭제 메소드
+	 * @param postId
+	 * @param userId
+	 */
 	//input : postId, userId
 	//output : x
 	public void deletePostByPostIdUserId(int postId, int userId) {
 		// 기존 글 가져오기 (이미지 존재시 이미지를 삭제하기 위해 기존 글 가져와야만 한다)
-		Post post = postMapper.selectPostByPostIdUserId(userId, postId);  //이미 기존에 있다
+		Post post = postMapper.selectPostByPostIdUserId(userId, postId);  //이미 위의 수정 메소드 안에 있다
 		// 이미 있는 글을 가져오기 때문에 무조건 존재한다
 		if(post == null) { //삭제할 대상(글)이 없을 때
 			log.info("[글 삭제] post is null. postId : {}, userId : {}", postId, userId);
@@ -145,6 +162,7 @@ public class PostBO {
 		}
 		
 		// post db delete
+		// 글 번호로 삭제
 		// 삭제한 행 개수 리턴(성공한 행 개수) -> 그 후 이미지 삭제
 		int rowCount = postMapper.deletePostByPostId(postId);
 		

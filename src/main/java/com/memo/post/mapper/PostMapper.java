@@ -28,6 +28,13 @@ public interface PostMapper {
 			@Param("sort") String sort
 			);
 	
+	/**
+	 * 글 생성 메소드
+	 * @param userId
+	 * @param subject
+	 * @param content
+	 * @param imagePath
+	 */
 	public void insertPost(
 			@Param("userId") int userId, 
 			@Param("subject") String subject, 
@@ -36,15 +43,33 @@ public interface PostMapper {
 			//multipart는 DB에 못들어간다
 			//String 으로 바꿔줘야한다. 
 	
+	/**
+	 * 글 수정, 삭제 메소드에서 post있나 확인 후 수정, 삭제할 글 가져오는 메소드 
+	 * @param userId
+	 * @param postId
+	 * @return Post (글 가져오기 때문에 Post로 리턴)
+	 */
 	public Post selectPostByPostIdUserId(
 			@Param("userId") int userId, 
 			@Param("postId") int postId);
 	
+	/**
+	 * 글 수정 메소드 
+	 * @param postId
+	 * @param subject
+	 * @param content
+	 * @param imagePath
+	 */
 	public void updatePostByPostId(
 			@Param("postId") int postId, 
 			@Param("subject") String subject, 
 			@Param("content") String content, 
 			@Param("imagePath") String imagePath);
 	
+	/**
+	 * 글 삭제 메소드
+	 * @param postId
+	 * @return
+	 */
 	public int deletePostByPostId(int postId);
 }
