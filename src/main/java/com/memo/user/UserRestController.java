@@ -21,7 +21,7 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class UserRestController {
 	
-	//이슈 테스트
+	//이슈 테스트22
 	
 		@Autowired
 		private UserBO userBO;
